@@ -33,6 +33,7 @@
     "jsx-a11y/control-has-associated-label": "off",
     "jsx-a11y/no-autofocus": "off",
     "react/forbid-prop-types": "off",
+    "react/function-component-definition":0,
     "indent": ["error", 2],
     "prettier/prettier": [
       "error",

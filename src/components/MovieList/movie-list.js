@@ -1,4 +1,5 @@
 import React from 'react'
+import { Spin, Alert } from 'antd'
 
 import MovieService from '../../services/MovieService'
 import Movie from '../Movie/movie'
@@ -8,7 +9,7 @@ export default class MovieList extends React.Component {
   movieService = new MovieService()
 
   state = {
-    error: null,
+    error: false,
     isLoaded: false,
     movies: [],
   }
@@ -17,7 +18,14 @@ export default class MovieList extends React.Component {
     this.movieService
       .getMovies()
       .then((res) => this.getMoviesList(res))
-      .catch((err) => this.showError(err))
+      .catch((err) => this.onError(err))
+  }
+
+  onError() {
+    this.setState({
+      error: true,
+      isLoaded: false,
+    })
   }
 
   getMoviesList(items) {
@@ -27,32 +35,38 @@ export default class MovieList extends React.Component {
     })
   }
 
-  showError(err) {
-    this.setState({
-      error: err,
-      isLoaded: false,
-    })
-  }
-
   render() {
     const { error, isLoaded, movies } = this.state
-    const movieList = movies.map((movie) => {
-      return (
-        <Movie
-          key={movie.id}
-          posterPath={movie.poster_path}
-          title={movie.title}
-          overview={movie.overview}
-          release={movie.release_date}
-        />
-      )
-    })
-    if (error) {
-      return <div>Ошибка: {error.message}</div>
-    }
-    if (!isLoaded) {
-      return <div>Загрузка...</div>
-    }
-    return <div className="moviesList">{movieList}</div>
+    const hasData = !(!isLoaded || error)
+    const errorMessage = error ? <ErrorView /> : null
+    const content = hasData ? <MoviesView movies={movies} /> : null
+    const loading = !isLoaded && !error ? <LoadingView /> : null
+    return (
+      <div className="moviesList">
+        {content}
+        {loading}
+        {errorMessage}
+      </div>
+    )
   }
+}
+const MoviesView = ({ movies }) => {
+  return movies.map((movie) => {
+    return (
+      <Movie
+        key={movie.id}
+        posterPath={movie.poster_path}
+        title={movie.title}
+        overview={movie.overview}
+        release={movie.release_date}
+      />
+    )
+  })
+}
+
+const LoadingView = () => {
+  return <Spin size="large" />
+}
+const ErrorView = () => {
+  return <Alert type="error" message="Oops, something went wrong!" banner />
 }
