@@ -67,3 +67,34 @@
   font-weight: 400;
   line-height: 22px;
 }
+.rating {
+  position: absolute;
+  z-index: 10;
+  right: 10px;
+  top: 12px;
+  height: 30px;
+}
+.rating__value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+.rating__value_color-red {
+  border: solid 2px #e90000;
+}
+.rating__value_color-orange {
+  border: solid 2px #e97e00;
+}
+.rating__value_color-yellow {
+  border: solid 2px #e9d100;
+}
+.rating__value_color-green {
+  border: solid 2px #66e900;
+}

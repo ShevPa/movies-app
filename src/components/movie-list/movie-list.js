@@ -1,8 +1,8 @@
 import React from 'react'
 import { Spin, Alert } from 'antd'
 
-import MovieService from '../../services/MovieService'
-import Movie from '../Movie/movie'
+import MovieService from '../../services/movie-service'
+import Movie from '../movie/movie'
 import './movie-list.css'
 
 export default class MovieList extends React.Component {
@@ -47,8 +47,13 @@ export default class MovieList extends React.Component {
   }
 
   updateMovies() {
-    const { searchValue, currentPage } = this.props
-    if (searchValue === '') {
+    const { searchValue, currentPage, isRatedActive, guestID } = this.props
+    if (isRatedActive === 'true') {
+      this.movieService
+        .getRatedMovies(guestID, currentPage)
+        .then((res) => this.getMoviesList(res))
+        .catch((err) => this.onError(err))
+    } else if (searchValue === '') {
       this.movieService
         .getPopularMovies(currentPage)
         .then((res) => this.getMoviesList(res))
@@ -65,7 +70,9 @@ export default class MovieList extends React.Component {
     const { error, isLoaded, movies, totalResults } = this.state
     const hasData = !(!isLoaded || error)
     const errorMessage = error ? <ErrorView /> : null
-    const content = hasData ? <MoviesView movies={movies} /> : null
+    const content = hasData ? (
+      <MoviesView movies={movies} addMovieRating={this.props.addMovieRating} ratedMovies={this.props.ratedMovies} />
+    ) : null
     const loading = !isLoaded && !error ? <LoadingView /> : null
     const noData = isLoaded && !totalResults ? <NoDataView /> : null
     return (
@@ -78,7 +85,7 @@ export default class MovieList extends React.Component {
     )
   }
 }
-const MoviesView = ({ movies }) => {
+const MoviesView = ({ movies, addMovieRating, ratedMovies }) => {
   return movies.map((movie) => {
     return (
       <Movie
@@ -87,6 +94,11 @@ const MoviesView = ({ movies }) => {
         title={movie.title}
         overview={movie.overview}
         release={movie.release_date}
+        rating={movie.vote_average}
+        ratedMovies={ratedMovies}
+        movieId={movie.id}
+        addMovieRating={(rating) => addMovieRating(movie.id, rating)}
+        genre={movie.genre_ids}
       />
     )
   })

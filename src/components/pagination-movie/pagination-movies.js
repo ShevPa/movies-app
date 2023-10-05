@@ -1,5 +1,6 @@
 import React from 'react'
 import { Pagination } from 'antd'
+import './pagination-movies.css'
 
 export default class PaginationMovies extends React.Component {
   render() {
