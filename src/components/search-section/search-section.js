@@ -10,17 +10,15 @@ export default class SearchSection extends React.Component {
   render() {
     const { searchValue, getSearchValue } = this.props
     return (
-      <div className="searchPanel">
-        <form onSubmit={this.onSubmit}>
-          <Input
-            size="large"
-            placeholder="Type to search..."
-            value={searchValue}
-            onChange={getSearchValue}
-            style={{ width: '940px' }}
-          />
-        </form>
-      </div>
+      <form className="searchPanel" onSubmit={this.onSubmit}>
+        <Input
+          className="searchPanel__input"
+          size="large"
+          placeholder="Type to search..."
+          value={searchValue}
+          onChange={getSearchValue}
+        />
+      </form>
     )
   }
 }

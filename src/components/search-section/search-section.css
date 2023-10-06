@@ -1,5 +1,17 @@
 .searchPanel {
   display: flex;
   justify-content: center;
-  min-width: 50%;
+  max-width: 940px;
+  margin: 10px auto;
+}
+.searchPanel__input {
+  height: 40px;
+  width: 100%;
+  font-size: 18px;
+}
+
+@media (max-width:550px) {
+  .searchPanel__input {
+    width: 380px;
+  }
 }

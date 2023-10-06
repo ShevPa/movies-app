@@ -140,8 +140,8 @@ export default class MovieApp extends React.Component {
           defaultActiveKey="false"
           items={items}
           onChange={this.onTabChange}
-          centered="true"
           destroyInactiveTabPane="true"
+          tabBarStyle={{ width: '150px', alignSelf: 'center', margin: '0', marginBottom: '20px' }}
         />
       </GenreProvider>
     )
